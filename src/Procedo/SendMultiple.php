@@ -26,6 +26,9 @@ class SendMultiple
     {
         try {
             $this->body = $this->_defineBody($body);
+            
+            if(empty($this->body))
+                throw new Exception('Array de dados Vazio');
 
             $result = $this->_send();
             
@@ -63,13 +66,11 @@ class SendMultiple
 
                 $result['sms'][] = [
                     'to' => $b['celular'],
-                    'msg' => $b['mensagem']
+                    'msg' => $b['mensagem'],
+                    'link' => $b['link'],
                 ];
             }
         }
-
-        if(empty($result))
-            throw new Exception('Array de dados Vazio');
 
         return $result;
     }
