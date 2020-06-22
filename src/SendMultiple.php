@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiSendSms;
+namespace Procedo;
 
 use Exception;
 use stdClass;
