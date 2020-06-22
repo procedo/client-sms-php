@@ -8,11 +8,13 @@ use stdClass;
 class SendMultiple
 {
     private $ret;
+    private $environment = 'production';
 
     public function __construct()
     {
-        if (!isset(ENVIRONMENT)) {
-            define('ENVIRONMENT', 'production');
+
+        if(defined('ENVIRONMENT')){
+            $this->environment = ENVIRONMENT;
         }
 
         $this->ret = new stdClass();
@@ -89,7 +91,7 @@ class SendMultiple
     private function _getApiHost()
     {
         $url = '';
-        switch (ENVIRONMENT) {
+        switch ($this->environment) {
             case 'development':
                 $url = 'http://localhost:3100/send';
                 break;
