@@ -28,8 +28,10 @@ class SendMultiple
             $this->body = $this->_defineBody($body);
 
             $result = $this->_send();
+            
             // Converte resposta em json
-            $result = json_decode($result, true);
+            $result = json_decode($result);
+           
 
             if ($result->status == FALSE) {
                 throw new Exception($result->mensagem);
@@ -49,29 +51,25 @@ class SendMultiple
 
     private function _defineBody($body)
     {
-        try {
-            $result = [
-                'sms' => ''
-            ];
 
-            if (!empty($body) && is_array($body)) {
-                foreach ($body as $b) {
-                    if (empty($b['celular']) && empty($b['mensagem']))
-                        continue;
+        $result = [
+            'sms' => ''
+        ];
 
-                    $result['sms'][] = [
-                        'to' => $b['celular'],
-                        'msg' => $b['mensagem']
-                    ];
-                }
+        if (!empty($body) && is_array($body)) {
+            foreach ($body as $b) {
+                if (empty($b['celular']) && empty($b['mensagem']))
+                    continue;
+
+                $result['sms'][] = [
+                    'to' => $b['celular'],
+                    'msg' => $b['mensagem']
+                ];
             }
-
-            if(empty($result))
-                throw new Exception('Array de dados Vazio');
-
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
         }
+
+        if(empty($result))
+            throw new Exception('Array de dados Vazio');
 
         return $result;
     }
@@ -83,9 +81,19 @@ class SendMultiple
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->body, JSON_NUMERIC_CHECK) );
 
-        return curl_exec($ch);
+        $result = curl_exec($ch);
+
+        $errors = curl_error($ch);
+        $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        curl_close($ch);
+
+        if($response != 200)
+            throw new Exception("[{$response}] {$errors}");
+
+        return $result;
     }
 
     private function _getApiHost()
