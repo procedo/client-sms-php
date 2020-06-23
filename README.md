@@ -37,6 +37,13 @@ use Procedo\SendMultiple;
 
 // Inicializa a classe de envio de multiplas mensagens
 $smsMultiple = new SendMultiple();
+
+// Variavel de ambiente ( development, testing, production )
+$smsMultiple->setEnvironment(env('APP_ENV'));
+
+// Token de autenticação ( cada projeto tem um token )
+$smsMultiple->setAccessToken(env('API_SMS_TOKEN'));
+
 ```
 
 Para utilizar o envio de SMS é necessário que as mensagens fiquem no formato abaixo
