@@ -51,6 +51,9 @@ class SendMultiple
         return $this->ret;
     }
 
+    public function setEnvironment($environment){
+        $this->environment = $environment;
+    }
 
     private function _defineBody($body)
     {
@@ -104,8 +107,9 @@ class SendMultiple
             case 'development':
                 $url = 'http://localhost:3100/send';
                 break;
+            case 'testing':
             case 'production':
-                $url = 'http://api-sms.procedo.com.br/send';
+                $url = 'http://sms.procedo.com.br/send';
                 break;
         }
         return $url;
