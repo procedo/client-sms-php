@@ -9,6 +9,7 @@ class SendMultiple
 {
     private $ret;
     private $environment = 'production';
+    private $accessToken = '';
 
     public function __construct()
     {
@@ -55,6 +56,10 @@ class SendMultiple
         $this->environment = $environment;
     }
 
+    public function setAccessToken($accessToken){
+        $this->accessToken = $accessToken;
+    }
+
     private function _defineBody($body)
     {
 
@@ -83,7 +88,7 @@ class SendMultiple
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->_getApiHost());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "x-access-token: {$this->accessToken}"));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->body, JSON_NUMERIC_CHECK) );
 
