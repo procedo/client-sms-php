@@ -12,7 +12,7 @@ No arquivo `composer.json` adicione:
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "https://gitlab.com/procedo/client-sms-php.git"
+			"url": "https://github.com/procedo/client-sms-php.git"
 		}
 	],
 }
