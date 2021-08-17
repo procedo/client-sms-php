@@ -64,7 +64,7 @@ class SendMultiple
     {
 
         $result = [
-            'sms' => ''
+            'sms' => []
         ];
 
         if (!empty($body) && is_array($body)) {
